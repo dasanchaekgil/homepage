@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>다산책길 — 발길 닿는 곳마다 다사로움</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+<style>
+  :root{
+    --primary:#0082FF;--secondary:#0082FF;--accent:#6BBBFF;--ink:#111;--muted:#464646;--border:#575B5D;
+    --bg:#fff;--bg-accent:#B5DDFF;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{background:var(--bg);color:var(--ink);font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,sans-serif;scroll-behavior:smooth}
+  body{display:flex;justify-content:center;min-width:1280px}
+  .page{width:100%;max-width:1920px;min-height:100vh;background:#fff;overflow:hidden;display:flex;flex-direction:column;align-items:center}
+
+  /* 헤더 */
+  .header-hide{transform:translateY(-110px);transition:transform 0.38s cubic-bezier(.4,0,.2,1);}
+  .header{transition:transform 0.38s cubic-bezier(.4,0,.2,1);} /* 헤더 트랜지션 */
+  .header{position:fixed;top:0;left:0;width:100%;height:110px;padding:24px 60px;display:flex;justify-content:space-between;align-items:center;z-index:100;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+  .logo{width:159px;height:73.38px;object-fit:contain}
+  .nav{display:flex;align-items:center;gap:57px}
+  .nav-link{color:var(--muted);font-size:22.88px;font-weight:500;text-transform:capitalize;line-height:33.18px;cursor:pointer}
+  .nav-link.underline{text-decoration:underline}
+  .nav-img {width: 53px; height: 29px; display: block; /* 인라인 여백 제거 */}
+
+  /* 히어로 */
+  .hero{width:100%;height:1000px;background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url("images/hero-bg.jpg") center/cover;display:flex;flex-direction:column;justify-content:center;align-items:center;padding-top:124px;position:relative;} /* 히어로 영역 레이아웃 */
+  .hero-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:25px;} /* 텍스트+버튼 중앙 정렬 묶음 */
+  .hero-title{width:100%;text-align:center;color:#fff;font-size:100px;font-family:Inter,system-ui,sans-serif;font-weight:700;line-height:70.4px;text-shadow:0 0 30px rgba(0,0,0,0);margin-bottom:20px;} /* 히어로 메인 문구 */
+  .hero-sub{text-align:center;color:#fff;font-size:40px;font-weight:500;line-height:34.8px;text-shadow:0 0 30px rgba(0,0,0,0);} /* 히어로 서브 문구 */
+  .scroll-down-btn{margin-top:20px;position:static;transform:none;width:60px;height:60px;background:#ffffff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;animation:bounce 2s ease-in-out infinite;transition:background 0.3s ease;z-index:10;} /* 버튼을 묶음 중앙아래로 이동, position:static으로 변경 */
+  .scroll-down-btn svg{width:24px;height:24px;color:#0082FF;transition:color 0.3s;} /* 버튼 화살표 아이콘(파랑) */
+  .scroll-down-btn:hover{background:#0082FF;} /* 버튼 호버 시 파란색 */
+  .scroll-down-btn:hover svg{color:#ffffff;} /* 버튼 호버 시 화살표 흰색 */
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(15px);}} /* 버튼 상하 애니메이션 */
+  
+  /* CTA - 한 줄로 표시 */
+  .cta {width: 100%; max-width: 1007px; padding: 50px 193.84px 25px; display: flex; justify-content: center; align-items: center; margin: 0 auto;}
+  .cta-inner{position:relative;display:inline-flex;align-items:flex-start}
+  .cta-icon{width:139px;height:87px; z-index: 1;}
+  .cta-bubble{width:646px;height:auto;margin-left: -30px;; position: relative; z-index: 2;}
+  .cta-text{position:absolute;left:145px;top:18px;width:600px;text-align:center;color:var(--muted);font-size:32px;font-weight:600;white-space:nowrap}
+
+  /* 지도 - North/West/East 위치 조정 */
+  .map-section{padding:15px 0;position:relative}
+  .map-main{width:1281px;height:726px;object-fit:cover}
+  .map-overlay{position:absolute;cursor:pointer;transition:opacity 0.2s}
+  .map-overlay:hover{opacity:0.8}
+  .map-north{left:131px;top:41px;width:600px;height:435px}
+  .map-west{left:133px;top:415px;width:412px;height:294px}
+  .map-east{left:731.5px;top:415px;width:364px;height:290px}
+  .map-all-btn {
+    position: absolute;
+    right: 30px;   /* 지도 우측에서 32px */
+    bottom: 40px;  /* 지도 하단에서 32px */
+    padding: 10px 15px;
+    background: #ffffff;
+    color: #464646;            /* 텍스트색 */
+    font-weight: 600;
+    font-size: 25px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: filter 0.18s;
+    text-decoration: none;  
+    z-index: 20;
+  }
+  .map-all-btn:hover {
+    filter: brightness(0.93);
+  }
+
+  /* ALL 타이틀 */
+  .section-title{width:100%;max-width:1280px;padding:30px 0 0px;display:flex;justify-content:center;align-items:center;gap:20px}
+  .section-title img{width:25px;height:25px}
+  .section-title span{color:var(--primary);font-size:50px;font-weight:600;line-height:55px}
+
+  /* 검색 - 캐릭터 양옆 배치 */
+  .search-wrap{width:100%;max-width:1280px;padding:0px 0;display:flex;justify-content:center;align-items:center;gap:50px}
+  .search-character:first-child{width:120px;height:120px;object-fit:contain}
+  .search-character:last-child{width:105px;height:105px;object-fit:contain}
+  .search-wrap .search-character:first-child{position:relative;top:-20px;transform:rotate(-15deg)}
+  .search-wrap .search-character:last-child{position:relative;top:-10px;transform:rotate(15deg)}
+  .search-box{position:relative;width:571px}
+  .search-input{width:100%;height:66px;border-radius:10px;border:4px solid var(--primary);padding:0 60px 0 20px;font-size:23px;font-family:inherit;outline:none}
+  .search-button{position:absolute;right:10px;top:50%;transform:translateY(-50%);width:43px;height:43px;cursor:pointer;background:transparent;border:none;padding:0}
+  .search-button img{width:100%;height:100%;object-fit:contain}
+
+  /* 탭 */
+  .tabs{width:100%;max-width:1280px;padding:20px 0 15px;display:flex;justify-content:center;align-items:center;gap:60px;flex-wrap:wrap}
+  .tab{padding:9px 10.8px;border-bottom:2px solid var(--primary);cursor:pointer}
+  .tab-label{color:var(--primary);font-size:26px;font-weight:600}
+  .tab.active .tab-label{background:rgba(107,187,255,0.3);border-radius:4.5px;padding:0 4.5px}
+
+  /* 상점 리스트 - 가로 채우기 (1행씩) */
+  .store-grid{width:100%;max-width:1600px;padding:20px 0 50px 20px;display:flex;justify-content:center;align-items:flex-start}
+  .store-column{width:340px;padding:5px 20px;border-left:2px solid rgba(87,91,93,0.5);display:flex;flex-direction:column;gap:15px}
+  .store-item{cursor:pointer}
+  .store-item:hover .store-name{color:var(--secondary)}
+  .store-name{color:#111;font-size:20px;font-weight:550;text-decoration:none;display:block;margin-bottom:px;word-break:keep-all;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;letter-spacing: 0.03em;}  /* margin-bottom 3px → 2px */
+  .store-name:hover{text-decoration:underline}
+  .store-link-row{display:inline-flex;align-items:center;gap:6px}
+  .store-link{color:#0082FF;font-size:11px;font-weight:450;text-decoration:none}
+  .store-link:hover{text-decoration:underline}
+  .arrow-icon{width:10px;height:10px;color:var(--primary)}
+
+  /* 애니메이션 효과 */
+  .store-item{cursor:pointer;margin-bottom:7px;opacity:0;transform:translateY(20px);transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),opacity 0.6s ease-out}
+  .store-item.visible{opacity:1;transform:translateY(0)}
+  .store-item.visible:hover{transform:translateX(12px) translateY(0)}
+  .store-name,.store-link{transition:color 0.3s ease}
+  .store-item:hover .store-name,.store-item:hover .store-link{color:#1270cf}
+  .arrow-icon{transition:all 0.3s ease}
+  .store-item:hover .arrow-icon{color:#1270cf;transform:translateX(4px)}
+
+  /* 갤러리 + 캐릭터 - 반응형 너비 */
+  .gallery-section{width:100%;margin:0 auto;background:var(--bg-accent);border-bottom-left-radius:300px;border-bottom-right-radius:300px;padding:30px 0;display:flex;flex-direction:column;align-items:center;gap:25px;overflow:hidden;box-sizing:border-box;flex-shrink: 0; } 
+  .map-character-wrapper{display:flex;justify-content:center;align-items:flex-end;position:relative;max-width:1400px;width:fit-content;margin-left:-200px;}
+  .character-box{width:clamp(800px,58vw,900px);height:clamp(535px,36vw,600px);background:#D9D9D9;border-radius:0px;position:relative;z-index:1;}
+  .character-img{position:absolute;bottom:0;left:calc(100% - clamp(100px, 36vw, 200px));width:clamp(420px,29vw,480px);height:auto;z-index:10;}
+  .gallery-scroll-wrapper{width:100%;overflow-x:hidden;position:relative;margin:0 auto;box-sizing:border-box;}
+  .gallery-row{display:flex;/*플렉스*/gap:16px;/*이미지 간격*/animation:scroll-left 20s linear infinite;/*자동 스크롤*/}
+  @keyframes scroll-left{0%{transform:translateX(0);}100%{transform:translateX(calc(-321px*4-64px));}/*이미지 스크롤 애니*/}
+  .gallery-img{width:300px;/*이미지 너비*/height:400px;/*이미지 높이*/border-radius:0px;/*둥근 모서리*/object-fit:cover;/*잘림*/flex-shrink:0;/*크기 고정*/}
+  @keyframes scroll-left{0%{transform:translateX(0);}100%{transform:translateX(-1284px);}/*이미지 스크롤 애니 끝 위치*/}
+
+
+
+
+  /* 푸터 */
+  .footer-wrap{width:100%;padding:80px 64px;background:#fff;border-top:0px solid #E5E7EB;}
+  .footer{max-width:1800px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-start;gap:60px;}
+  .footer-left{display:flex;flex-direction:column;gap:40px}
+  .footer-logo{width:149px;height:69px}
+  .footer-desc{opacity:0.6;color:var(--muted);font-size:21px;font-weight:400;line-height:30px;margin-top:12px}
+  .footer-social{display:flex;gap:35px}
+  .footer-social img{width:36px;height:36px;cursor:pointer}
+  .footer-partners{height:261px;overflow:hidden;display:inline-flex;justify-content:center;align-items:center;gap:28px;padding-top:150px;}
+  .partner-1{margin-right:0px}
+  .partner-2{margin-right:-5px}
+  .partner-3{margin-right:2px}
+  .partner-4{margin-right:5px}
+  .partner-5{margin-right:0}
+  
+
+  /* 맨 위로 플로팅 */
+  .floating-btn {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    width: 60px;
+    height: 60px;
+    background: var(--primary);
+    border: none;
+    border-radius: 50%;
+    /*box-shadow: 0 4px 12px rgba(0, 94, 152, 0.3);*/
+    cursor: pointer;
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #fff;
+  }
+
+  .floating-btn:hover {
+    background: #6BBBFF;
+    transform: translateY(-4px);
+    /*box-shadow: 0 6px 16px rgba(0, 130, 255, 0.4);8*/
+  }
+
+  .floating-btn:active {
+    transform: translateY(-2px);
+  }
+
+  .floating-btn svg {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* 반응형 - 모바일 */
+
+  @media (max-width: 540px) {
+
+  html, body {
+    width: 100vw !important;    /* 뷰포트 기반으로 가로 확장 */
+    max-width: 100vw !important;
+    min-width: 0 !important;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden !important;
+  }
+  .page {
+    width: 100vw !important;    /* ★ 페이지 컨테이너도 확장 */
+    min-width: 0 !important;
+    max-width: none !important; /* 최대값 제한 해제 */
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: visible;
+    box-sizing: border-box;
+  }
+  /* ========== 헤더 ========== */
+  .header {width: 100vw; max-width: 375px; padding: 24px 20px; margin: 0 auto; background: #fff; box-shadow: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; position: relative; height: auto; min-width: 0; }
+  .logo { width: 131px; height: 61px; object-fit: contain; margin: 0; padding: 0; display: block; }
+  .nav { width: 100%; display: flex; flex-direction: row; justify-content: center; align-items: center; gap: clamp(10px, 8vw, 40px); margin: 0; padding: 0; }
+  .nav-link { color: #464646; font-size: 18px; font-family: Pretendard, sans-serif; font-weight: 450; text-decoration: underline; text-transform: capitalize; line-height: 22.78px; background: none; border: none; cursor: pointer; padding: 0; margin: 0; display: flex; justify-content: center; align-items: center; }
+  .nav-img {width: 35px; /* 원하는 크기로 조절 */height: auto; /* 비율 유지 */}
+  /* ========== 히어로 영역 ========== */
+  .hero{width:100vw ;height:30vh;background:linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)),url("images/hero-bg.jpg") center/cover;display:flex;flex-direction:column;justify-content:center;align-items:center;padding-top:0px;position:relative;} /* 히어로 영역 레이아웃 */
+  .hero-inner{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:25px;} /* 텍스트+버튼 중앙 정렬 묶음 */
+  .hero-title{width:100%;text-align:center;color:#fff;font-size:30px;font-family:Inter,system-ui,sans-serif;font-weight:600;line-height:60px;text-shadow:0 0 30px rgba(0,0,0,0);margin-bottom:-35px;} /* 히어로 메인 문구 */
+  .hero-sub{text-align:center;color:#fff;font-size:16px;font-weight:400;line-height:34.8px;text-shadow:0 0 30px rgba(0,0,0,0);} /* 히어로 서브 문구 */
+  .scroll-down-btn{margin-top:-10px;position:static;transform:none;width:45px;height:45px;background:#ffffff;border:none;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;animation:bounce 2s ease-in-out infinite;transition:background 0.3s ease;z-index:10;} /* 버튼을 묶음 중앙아래로 이동, position:static으로 변경 */
+  .scroll-down-btn svg{width:25px;height:25px;color:#0082FF;transition:color 0.3s;} /* 버튼 화살표 아이콘(파랑) */
+  .scroll-down-btn:hover{background:#0082FF;} /* 버튼 호버 시 파란색 */
+  .scroll-down-btn:hover svg{color:#ffffff;} /* 버튼 호버 시 화살표 흰색 */
+  @keyframes bounce{0%,100%{transform:translateY(0);}50%{transform:translateY(15px);}} /* 버튼 상하 애니메이션 */
+  /* ========== 캐릭터 & CTA 영역 ========== */
+  .cta {
+    width: 100vw; max-width: 375px;
+    display: flex; flex-direction: column; align-items: center;
+    margin: 0 auto; padding: 20px 0 0 20px; position: relative;
+  }
+  .cta-inner {
+    width: 100%; display: flex; flex-direction: column; align-items: center; position: relative;
+  }
+  /* 캐릭터 이미지는 숨기거나(모바일 디자인에 없다면), 혹은 상단 배치 */
+  .cta-icon { display: none; } 
+  
+  /* 말풍선 이미지 */
+  .cta-bubble {
+    width: 390px; height: auto; object-fit: contain; display: block;
+  }
+  
+  /* 텍스트: 말풍선 중앙에 강제 배치 */
+  .cta-text {
+    position: absolute;
+    top: 53%; left: 48%; transform: translate(-50%, -55%);
+    width: 100%; text-align: center;
+    color: #464646; font-size: 19px; font-weight: 550;
+    white-space: nowrap; z-index: 10;
+  }
+
+  /* ========== 지도 영역 (심플) ========== */
+  .map-section {
+    width: 100vw;
+    padding: 10px 0px; margin: 0 auto 4px auto;
+    position: relative;
+    display: block; /* flex 대신 block 사용 */
+  }
+
+  /* 배경 지도: 비율 유지하며 꽉 차게 */
+  .map-main {
+    width: 100%; height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  /* 공통 오버레이 스타일 */
+  .map-overlay {
+    position: absolute;
+    cursor: pointer;
+    z-index: 10;
+    /* 모바일 터치 영역 확보 및 이미지 크기 자동 조절 */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  .map-overlay:active { transform: scale(0.98); }
+
+  /* 각 버튼의 정확한 위치와 크기 (% 단위로 반응형 처리) */
+  
+  /* North: 상단 중앙 */
+  .map-north {
+    width: 53%; height:auto;
+    top: 6%; left: 6%;
+  }
+
+  /* West: 좌측 하단 */
+  .map-west {
+    width: 35.2%; height:auto;
+    top: 55%; left: 6.4%;
+  }
+
+  /* East: 우측 하단 */
+  .map-east {
+    width: 31.5%; height: auto;
+    top: 55%; left: 61.2%;
+  }
+
+  .map-all-btn {
+    position: absolute;
+    bottom: 82%;
+    right: 6%;
+    min-width: 50px;
+    max-width: 180px;
+    height: auto;
+    padding: 5px 10px;
+    background: #fff;
+    color: #464646;
+    font-size: clamp(14px, 2vw, 17px); /* 반응형 글자 크기 */
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: filter 0.18s;
+    text-decoration: none;
+    z-index: 20;
+    display: inline-block;  /* 핵심! 세로로 안 늘어나게 */
+    white-space: nowrap;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  .map-all-btn:hover {
+    filter: brightness(0.93);
+  }
+
+  /* ========== 구분 타이틀/탭 ========== */
+  .section-title {
+    width: 100vw; max-width: 375px;
+    padding: 16px 0 5px 0; margin: 0 auto;
+    display: flex; justify-content: center; align-items: center; gap: 9px;
+  }
+  .section-title img {
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+  }
+  .section-title span {
+    color: #0082FF;
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 23px;
+    letter-spacing: -0.01em;
+  }
+
+  .tabs {
+    width: 100%; max-width: 350px;
+    padding: 10px 0 20px 0px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; justify-content: center;
+    row-gap: 12px; column-gap: 17px;
+  }
+  
+  .tab {
+    flex: 0 0 auto;
+    /* 탭 자체에는 상하좌우 패딩 없음 */
+    padding: 0; margin: 0;
+    border-bottom: 2px solid #0082FF;
+    padding-left: 1px; 
+    padding-right: 1px;
+    padding-bottom: 0px; /* 글자와 밑줄 사이 간격 */
+    background: none;
+    cursor: pointer;
+    display: flex; justify-content: center; align-items: center;
+    /* 높이 고정 (선택사항, 줄맞춤 용) */
+    height: 32px; 
+  }
+
+  .tab-label {
+    font-size: 20px; font-weight: 600; color: #0082FF;
+    
+    /* ★핵심: 평소에도 투명한 패딩을 줘서 공간 미리 확보 */
+    /* 상하 3px, 좌우 6px */
+    padding: 6px 4.5px;
+    border-radius: 4px;
+    /* 배경색만 없을 뿐 공간은 차지함 */
+    background-color: transparent; 
+    /* 폰트 크기 변화 없음 */
+  }
+
+  /* 활성 상태: 배경색만 칠함 (패딩/크기 변화 0) */
+  .tab.active .tab-label {
+    background-color: #B5DDFF;
+  }
+
+  /* ========== 검색창 ========== */
+  .search-wrap {
+    width: 100vw; max-width: 375px;
+    padding: 12px 0 8px 0; margin: 0 auto;
+    display: flex; flex-direction: column; align-items: center;
+  }
+  .search-box {
+    width: 335px; /* 좌우 여백 고려한 너비 */
+    position: relative; margin: 0 auto;
+  }
+  .search-input {
+    width: 100%; height: 36px;
+    border: 2px solid #0082FF; border-radius: 6px;
+    padding: 0 34px 0 12px;
+    font-size: 15px; outline: none;
+    background: #fff;
+  }
+  .search-button {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    width: 20px; height: 20px; padding: 0; border: none; background: none;
+  }
+  .search-button img { width: 100%; height: 100%; object-fit: contain; }
+  /* 캐릭터 숨김 (모바일 시안에 없음) */
+  .search-character { display: none; }
+
+
+  /* ========== 리스트 영역 (컬럼1) ========== */
+    /* 1. 전체 리스트 컨테이너: 화면 중앙 정렬 */
+  .store-grid {
+    width: 100%; max-width: 375px;
+    display: flex; flex-direction: column; align-items: center; /* 중앙 정렬 */
+    padding: 10 24px; margin: 0 auto;
+    gap: 0; background: #fff;
+  }
+
+  /* 2. 실제 리스트 영역: 왼쪽 회색 선 기준 좌측 정렬 */
+  .store-column {
+    width: 100%; min-width: fit-content; max-width: none;  /* 내용물 너비 제한 (중앙 배치용) */
+    border-left: 2px solid #AEAFB0; /* 왼쪽 회색 선 */
+    padding-left: 20px; /* 선과 글자 사이 간격 */
+    display: flex; flex-direction: column; gap: 20px; /* 항목 간 간격 */
+    margin: 0; /* 중앙 정렬은 부모(store-grid)가 담당 */
+  }
+
+  /* 3. 개별 아이템: 왼쪽 정렬 */
+  .store-item {
+    width: 100%; text-align: left; /* 텍스트 좌측 정렬 */
+    padding: 0; margin: 0; border: none; background: none;
+  }
+
+  /* 4. 텍스트 스타일 */
+  .store-name {
+    white-space: nowrap; font-size: 18px; font-weight: 530; color: #111;
+    margin-bottom: 3px; display: block; 
+  }
+  .store-link {
+    font-size: 14px; color: #1270cf; font-weight: 400;
+  }
+  .store-link-row {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .arrow-icon {
+    width: 12px; height: 12px;
+    color: #1270cf;
+  }
+
+  .store-name:hover, .store-link:hover {
+    color: #1270cf;
+    text-decoration: underline;
+  }
+
+
+  /* ========== 갤러리 ========= */
+  .gallery-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    
+    position: static;
+    
+    background: #B5DDFF;
+    border-bottom-left-radius: 100px;
+    border-bottom-right-radius: 100px;
+    padding: 20px 0 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+  .gallery-row {
+    display: flex;
+    gap: 9px;
+    overflow-x: visible;
+    margin: 0;
+    width: max-content;
+    animation: scroll-mobile 20s linear infinite;
+  }
+  .gallery-img {
+    width: 170px;
+    height: 220px;
+    border-radius: 0px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  @keyframes scroll-mobile {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-33.33%); }
+  }
+  .character-box{width:90vw;max-width:400px;height:250px;background: #B5DDFF;border-radius:0px;overflow:hidden;margin:0 auto;}
+  .character-img{ display: none; }
+  .character-box iframe, .character-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border: none;
+  }
+  .map-character-wrapper { margin-left: 0px; display: flex; justify-content: center; align-items: flex-start; position: relative; width: 100%; }
+  /* ========== 푸터 ========= */
+
+  /* ★핵심 1: 부모 컨테이너(.footer-wrap) 좌우 패딩 제거 */
+  .footer-wrap {
+    padding: 0 0 100px 0 !important; /* 상하만 유지, 좌우는 0 */
+    width: 100%;
+  }
+
+  /* ★핵심 2: .footer 좌우 여백 최소화 */
+  .footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end !important;  /* 하단 정렬 */
+    
+    padding: 0 16px !important; /* 좌우 8px만 (거의 없음) */
+    margin: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 10px; /* 좌우 그룹 사이 최소 간격 */
+  }
+
+  /* [왼쪽 그룹] 너비 최대 확대 */
+  .footer-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end !important; 
+    gap: 30px;
+    
+    /* ★핵심: 너비 대폭 확대 */
+    width: 60% !important;
+    flex-shrink: 0;
+  }
+
+  .footer-left > div:first-child { gap: 10px; }
+  .footer-logo { width: 110px; height: auto; margin: 0; }
+
+  /* 설명글 2줄 고정 */
+  .footer-desc {
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 14.5px;
+    color: #464646;
+    opacity: 0.6;
+    margin: 0;
+    
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    word-break: keep-all;
+  }
+
+  .footer-social { display: flex; gap: 14px; margin: 0; align-items: flex-end;}
+  .footer-social img { width: 24px; height: 24px; display: block; }
+
+
+  /* [오른쪽 그룹] 너비 최대 확대 */
+  .footer-partners {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* ★핵심: 우측 정렬 */
+    justify-content: flex-end !important;
+    gap: 12px;
+    width: 36% !important;
+    height: 200px;
+    flex-shrink: 0;
+    padding: 0 0 5px 0 !important;
+    margin: 0 !important;
+  }
+
+  .partner-logo {
+    max-height: 16px;
+    width: auto !important;
+    margin-left: auto !important;
+    object-fit: contain;
+    object-position: right;
+  }
+
+  /* 개별 로고 조정 */
+  .partner-1 { max-height: 16px !important; } /* 남양주 */
+  .partner-2 { max-height: 13px !important; } /* 경기대진 */
+  .partner-3 { max-height: 13px !important; } /* 경기북부 */
+  .partner-4 { max-height: 9px !important; } /* 다산상인회 */
+  .partner-5 { max-height: 9px !important; } /* FRONT KIT */
+  /* ========== 플로팅버튼 ========= */
+  .floating-btn {
+    width: 50px;
+    height: 50px;
+    bottom: 24px;
+    right: 24px;
+  }
+  
+  .floating-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+.nav-link, .nav-link * {
+  text-decoration: none !important;
+}
+
+
+
+</style>
+</head>
+<body>
+<div class="page">
+  <!-- 헤더 -->
+  <header class="header">
+    <a href="dasan-home.html" class="logo-link">
+      <img class="logo" src="images/logo.svg" alt="다산책길" />
+    </a>
+    <nav class="nav">
+      <a class="nav-link" href="dasan-brand.html">Brand</a>
+      <a class="nav-link underline" href="https://www.instagram.com/dasan_chaek_gil/" target="_blank" rel="noopener">Instagram</a>
+      <div class="nav-link">Event</div>
+        <a href="https://www.nyj.go.kr/www/index.do" target="_blank" rel="noopener">
+            <img class="nav-img" src="images/namyangju-logo.svg" alt="KO" />
+        </a>
+    </nav>
+  </header>
+
+  <!-- 히어로 -->
+  <section class="hero"> <!-- 히어로 영역 시작 -->
+    <div class="hero-inner"> <!-- 텍스트+버튼 묶음 시작 -->
+      <h1 class="hero-title">발길 닿는 곳마다 다사로움</h1> <!-- 메인 타이틀 -->
+      <p class="hero-sub">경기 남양주시 다산동 6281</p> <!-- 서브 타이틀 -->
+      <button class="scroll-down-btn" id="scrollDownBtn" aria-label="아래로 스크롤">
+        <svg width="24" height="24" viewBox="0 0 24 24"><path d="M12 5V19M12 19L5 12M12 19L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </div> <!-- 텍스트+버튼 묶음 끝 -->
+  </section> <!-- 히어로 영역 끝 -->
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="cta-inner">
+      <img class="cta-icon" src="images/cta-character.svg" alt="" />
+      <img class="cta-bubble" src="images/cta-bubble-darkblue.svg" alt="" />
+      <div class="cta-text">지도를 눌러, 다산책길을 산책해보세요!</div>
+    </div>
+  </section>
+
+  <!-- 지도 -->
+  <section class="map-section">
+    <picture>
+      <source srcset="images/map-main-mobile.svg" media="(max-width: 540px)">
+      <img class="map-main" src="images/map-main.svg" alt="지도" />
+    </picture>
+    <a href="dasan-north.html"><img class="map-overlay map-north" src="images/map-north.svg" alt="North" /></a>
+    <a href="dasan-west.html"><img class="map-overlay map-west" src="images/map-west.svg" alt="West" /></a>
+    <a href="dasan-east.html"><img class="map-overlay map-east" src="images/map-east.svg" alt="East" /></a>
+    <a href="https://map.naver.com/p/favorite/sharedPlace/folder/9dae53909d884cb8badf282ca912282a/pc"
+      target="_blank" rel="noopener"
+      class="map-all-btn">
+      전체 보기
+    </a>
+  </section>
+
+  <!-- ALL -->
+  <section class="section-title">
+    <a href="dasan-north.html">
+      <img src="images/title-arrow-left.svg" alt="" />
+    </a>
+    <span>Home</span>
+    <a href="dasan-east.html">
+      <img src="images/title-arrow-right.svg" alt="" />
+    </a>
+  </section>
+
+  <!-- 검색 (캐릭터 양옆) -->
+  <section class="search-wrap">
+    <img class="search-character" src="images/search-character-left.svg" alt="" />
+    <div class="search-box">
+      <input id="searchInput" class="search-input" type="text" placeholder="상호명을 검색하세요" />
+      <button id="searchBtn" class="search-button">
+        <img src="images/search-icon.svg" alt="검색" />
+      </button>
+    </div>
+    <img class="search-character" src="images/search-character-right.svg" alt="" />
+  </section>
+
+  <!-- 탭 -->
+  <section class="tabs">
+    <div class="tab active" data-category="all"><div class="tab-label">ALL</div></div>
+    <div class="tab" data-category="식사"><div class="tab-label">식사</div></div>
+    <div class="tab" data-category="고기/구이"><div class="tab-label">고기/구이</div></div>
+    <div class="tab" data-category="주류/안주"><div class="tab-label">주류/안주</div></div>
+    <div class="tab" data-category="간편식"><div class="tab-label">간편식</div></div>
+    <div class="tab" data-category="카페/디저트"><div class="tab-label">카페/디저트</div></div>
+    <div class="tab" data-category="쇼핑/생활"><div class="tab-label">쇼핑/생활</div></div>
+  </section>
+
+  <!-- 상점 리스트 -->
+  <section class="store-grid" id="storeGrid"></section>
+
+  <!-- 갤러리 + 캐릭터 (반응형 배경) -->
+  <section class="gallery-section">
+  <div class="map-character-wrapper">
+    <div class="character-box">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3160.556727645337!2d127.1645474265941!3d37.61259022202675!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x357cb7000ea1d329%3A0x9b4d109c79627a33!2z64uk7IKw7LGF6ri4!5e0!3m2!1sko!2skr!4v1763621464978!5m2!1sko!2skr"
+        width="100%" 
+        height="100%" 
+        style="border:0;border-radius:0px" 
+        allowfullscreen="" 
+        loading="lazy">
+      </iframe>
+    </div>
+    <img class="character-img" src="images/character-main.svg" alt="캐릭터" />
+  </div>
+  <div class="gallery-scroll-wrapper">
+    <div class="gallery-row">
+      <img class="gallery-img" src="images/gallery-1.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-2.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-3.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-4.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-1.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-2.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-3.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-4.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-1.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-2.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-3.jpg" alt="" />
+      <img class="gallery-img" src="images/gallery-4.jpg" alt="" />
+    </div>
+  </div>
+</section>
+
+
+  <!-- 푸터 -->
+  <footer class="footer-wrap">
+    <div class="footer">
+      <div class="footer-left">
+        <div>
+          <img class="footer-logo" src="images/logo-footer.svg" alt="" />
+          <div class="footer-desc">발길 닿는 곳마다 다사로움,<br/>남양주시 다산동 문화거리입니다.</div>
+        </div>
+        <div class="footer-social">
+          <img src="images/icon-instagram.svg" alt="Instagram" onclick="window.open('https://www.instagram.com/dasan_chaek_gil/','_blank')" />
+          <a href="tel:031-569-0010">
+            <img src="images/icon-phone.svg" alt="Phone" />
+          </a>
+        </div>
+      </div>
+      
+      <!-- 협력사 로고 -->
+      <div class="footer-partners">
+        <img class="partner-logo partner-1" src="images/partner-1.svg" alt="협력사1" style="width:52.25px;height:27.55px" />
+        <img class="partner-logo partner-2" src="images/partner-2.svg" alt="협력사2" style="width:145px;height:20px" />
+        <img class="partner-logo partner-3" src="images/partner-3.svg" alt="협력사3" style="width:173px;height:24px" />
+        <img class="partner-logo partner-4" src="images/partner-4.svg" alt="협력사4" style="width:151px;height:20px" />
+        <img class="partner-logo partner-5" src="images/partner-5.svg" alt="협력사5" style="width:149px;height:20px" />
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- 맨위로 플로팅 -->
+<button class="floating-btn" id="scrollToTop" aria-label="맨 위로">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 19V5M12 5L5 12M12 5L19 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
+<script>
+  if (history.scrollRestoration) { history.scrollRestoration = 'manual'; }
+  window.addEventListener('load', () => { window.scrollTo(0, 0); });
+
+  document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){currentSearch=e.target.value.trim();renderStores();}});
+// 130개 업체 데이터 (CSV 기준으로 수정)
+const stores = [
+  {name:"공릉동원조멸치국수 다산점", category:"식사", link:"https://naver.me/GbDke7fA"},
+  {name:"다산식당", category:"식사", link:"https://naver.me/F0ApzO6P"},
+  {name:"자반고 다산신도시점", category:"식사", link:"https://naver.me/GctrBSH4"},
+  {name:"먹골 소갈비", category:"고기/구이", link:"https://naver.me/5z5dAX31"},
+  {name:"오봉집 다산법원점", category:"주류/안주", link:"https://naver.me/G386Y2nv"},
+  {name:"꼬또", category:"간편식", link:"https://naver.me/FcmcMCIR"},
+  {name:"그로브나인 다산", category:"카페/디저트", link:"https://naver.me/GFBdBYiT"},
+  {name:"컴포즈커피 남양주다산법조타운점", category:"카페/디저트", link:"https://naver.me/FmfHzkYJ"},
+  {name:"CU 다산정행점", category:"쇼핑/생활", link:"https://naver.me/GkUeo6AF"},
+  {name:"세실리아", category:"쇼핑/생활", link:"https://naver.me/GvfkKHj1"},
+  {name:"72420 다산점", category:"식사", link:"https://naver.me/xv35SiSA"},
+  {name:"마라공방 다산법조타운점", category:"식사", link:"https://naver.me/GXApoa3e"},
+  {name:"소코아 다산점", category:"식사", link:"https://naver.me/GpCTYu3l"},
+  {name:"어화덕", category:"식사", link:"https://naver.me/xmxexA44"},
+  {name:"에바돈가츠 도농점", category:"식사", link:"https://naver.me/xrS5Kcuc"},
+  {name:"육회바른연어 다산법조타운점", category:"식사", link:"https://naver.me/GzE9RGcw"},
+  {name:"파츠포인트", category:"식사", link:"https://naver.me/G386fV2n"},
+  {name:"덕붕뽈살 다산직영점", category:"고기/구이", link:"https://naver.me/5T4sC5kT"},
+  {name:"라무진 도농역점", category:"고기/구이", link:"https://naver.me/FDnCE4uM"},
+  {name:"순정한우정육식당 다산점", category:"고기/구이", link:"https://naver.me/xv3D9Va6"},
+  {name:"한우만", category:"고기/구이", link:"https://naver.me/F0z2VDfQ"},
+  {name:"BHC 다산1동점", category:"주류/안주", link:"https://naver.me/G4W8DJBU"},
+  {name:"감성쭈꾸미 다산점", category:"주류/안주", link:"https://naver.me/GDa2shHr"},
+  {name:"노랑통닭 다산도농역점", category:"주류/안주", link:"https://naver.me/5CWGaNQ5"},
+  {name:"누구나홀딱반한닭 남양주도농점", category:"주류/안주", link:"https://naver.me/G7Vu0vDm"},
+  {name:"푸라닭 남양주도농역점", category:"주류/안주", link:"https://naver.me/GIGFoKdb"},
+  {name:"해탄 다산법원점", category:"주류/안주", link:"https://naver.me/5T4AZgxq"},
+  {name:"별빛스푼샐러드 다산점", category:"간편식", link:"https://naver.me/xdpTV8s8"},
+  {name:"본죽&비빔밥 남양주도농점", category:"간편식", link:"https://naver.me/FtTmpqbC"},
+  {name:"경성프로틴카페 다산점", category:"카페/디저트", link:"https://naver.me/Fr7ffhVW"},
+  {name:"리프패럿 다산신도시점", category:"카페/디저트", link:"https://naver.me/GTnqTqSa"},
+  {name:"배스킨라빈스 다산법조타운점", category:"카페/디저트", link:"https://naver.me/GrexnMV4"},
+  {name:"와플대학 다산도농캠퍼스", category:"카페/디저트", link:"https://naver.me/xCBg72vf"},
+  {name:"우디가", category:"카페/디저트", link:"https://naver.me/5PV0aDgX"},
+  {name:"테르타스", category:"카페/디저트", link:"https://naver.me/G65tDJzX"},
+  {name:"투썸플레이스 다산법원점", category:"카페/디저트", link:"https://naver.me/Gn0yXjWw"},
+  {name:"후투티", category:"카페/디저트", link:"https://naver.me/5Kq6qH6Y"},
+  {name:"CU 다산타워점", category:"쇼핑/생활", link:"https://naver.me/FzsEpP5s"},
+  {name:"GS25 다산도서관점", category:"쇼핑/생활", link:"https://naver.me/xHmnovcC"},
+  {name:"나이스가이 다산법조타운점", category:"쇼핑/생활", link:"https://naver.me/5PlR7YLL"},
+  {name:"다산 자동차 공업사", category:"쇼핑/생활", link:"https://naver.me/GyY2Qjqo"},
+  {name:"안경기업 다산점", category:"쇼핑/생활", link:"https://naver.me/FafDB9cT"},
+  {name:"우리집강아지미용실", category:"쇼핑/생활", link:"https://naver.me/xq3CG819"},
+  {name:"프리디아나 다산본점", category:"쇼핑/생활", link:"https://naver.me/5qDYNNK0"},
+  {name:"가마솥 닭한마리 다산법조타운점", category:"식사", link:"https://naver.me/FG7x1pF1"},
+  {name:"강씨네 아천 칡냉면", category:"식사", link:"https://naver.me/5l73xyha"},
+  {name:"골목안채", category:"식사", link:"https://naver.me/5UEc769q"},
+  {name:"국밥의 대가 다산본점", category:"식사", link:"https://naver.me/Gxk1pAwG"},
+  {name:"길동우동 다산도농점", category:"식사", link:"https://naver.me/FJbmwMuf"},
+  {name:"김광수뚝배기", category:"식사", link:"https://naver.me/x8tpAeH5"},
+  {name:"남양중식 태룡각", category:"식사", link:"https://naver.me/GQSXqizF"},
+  {name:"다산반점", category:"식사", link:"https://naver.me/5tJtbWQ7"},
+  {name:"도도야 다산직영점", category:"식사", link:"https://naver.me/59vo3qmJ"},
+  {name:"뚜띠쿠치나 다산점", category:"식사", link:"https://naver.me/xrSMEBOg"},
+  {name:"라와마라탕 다산점", category:"식사", link:"https://naver.me/GubSh1EZ"},
+  {name:"라키 다산본점", category:"식사", link:"https://naver.me/5JpUr0XX"},
+  {name:"마이다이닝 다산본점", category:"식사", link:"https://naver.me/GbDFQqd6"},
+  {name:"배부장찌개 다산점", category:"식사", link:"https://naver.me/GTnqnJQ7"},
+  {name:"샤브토랑 다산지금점", category:"식사", link:"https://naver.me/5T4AUC26"},
+  {name:"송하갈비탕", category:"식사", link:"https://naver.me/xdp38p1n"},
+  {name:"쉐프엠 다산부영점", category:"식사", link:"https://naver.me/xAA3119e"},
+  {name:"온가헌", category:"식사", link:"https://naver.me/GhbqLv0N"},
+  {name:"용덕장 코다리 다산점", category:"식사", link:"https://naver.me/55rwBpDS"},
+  {name:"이가육전칡냉면 다산본점", category:"식사", link:"https://naver.me/FvEv0TWt"},
+  {name:"이태리부대찌개 다산점", category:"식사", link:"https://naver.me/FFGLG6V4"},
+  {name:"이화수 전통육개장 다산법조타운점", category:"식사", link:"https://naver.me/xKERJ631"},
+  {name:"춘향골남원추어탕 다산법조타운점", category:"식사", link:"https://naver.me/Gvcp8Q2A"},
+  {name:"큐슈울트라아멘 다산점", category:"식사", link:"https://naver.me/GNWk6Dp3"},
+  {name:"탕화쿵푸 마라탕 남양주도농점", category:"식사", link:"https://naver.me/FMTh8QVa"},
+  {name:"행복예감 다산본점", category:"식사", link:"https://naver.me/F6lTHXRC"},
+  {name:"화라공방 마라탕 다산법조타운본점", category:"식사", link:"https://naver.me/F1rOgyAv"},
+  {name:"황뚝", category:"식사", link:"https://naver.me/G2EIHWcH"},
+  {name:"92년생 소곱창 다산직영점", category:"고기/구이", link:"https://naver.me/GJ5UW6En"},
+  {name:"깡통집", category:"고기/구이", link:"https://naver.me/GKUJ2xkP"},
+  {name:"다산숯불갈비", category:"고기/구이", link:"https://naver.me/xeAfScCP"},
+  {name:"다산쌈돼지", category:"고기/구이", link:"https://naver.me/5chuISnc"},
+  {name:"다산철판닭갈비", category:"고기/구이", link:"https://naver.me/GeURsXzw"},
+  {name:"돈목 다산본점", category:"고기/구이", link:"https://naver.me/56R6IAlI"},
+  {name:"미진축산 남양주다산점", category:"고기/구이", link:"https://naver.me/xMn2Umpu"},
+  {name:"별미양곱창", category:"고기/구이", link:"https://naver.me/xFLe7fiA"},
+  {name:"소낭곱창", category:"고기/구이", link:"https://naver.me/FN7XvvLb"},
+  {name:"싹쓰리솥뚜껑김치삼겹살", category:"고기/구이", link:"https://naver.me/GWe2x58d"},
+  {name:"안돈", category:"고기/구이", link:"https://naver.me/GZ6zwXs7"},
+  {name:"우문현답", category:"고기/구이", link:"https://naver.me/GYC9PdPr"},
+  {name:"우취: 한우와 취하다", category:"고기/구이", link:"https://naver.me/xIe6tnT1"},
+  {name:"인생돼지 다산점", category:"고기/구이", link:"https://naver.me/58Nd63OC"},
+  {name:"제주옥탑 남양주다산점", category:"고기/구이", link:"https://naver.me/xHgPns1r"},
+  {name:"까리뇨", category:"주류/안주", link:"https://naver.me/FfeOwZic"},
+  {name:"동이상회 인생역전", category:"주류/안주", link:"https://naver.me/F889Whut"},
+  {name:"맛닭꼬 다산부영점", category:"주류/안주", link:"https://naver.me/Fio7hA7A"},
+  {name:"무안 뻘 낙지", category:"주류/안주", link:"https://naver.me/FPnPjCtW"},
+  {name:"바다풍경", category:"주류/안주", link:"https://naver.me/G1wSaqzO"},
+  {name:"브롱스 다산중앙점", category:"주류/안주", link:"https://naver.me/5bVSsfyl"},
+  {name:"사이치킨", category:"주류/안주", link:"https://naver.me/5jJHgOb6"},
+  {name:"신의주 순대와 쭈꾸미 다산지금점", category:"주류/안주", link:"https://naver.me/xcnaMdbt"},
+  {name:"이자카야 공감", category:"주류/안주", link:"https://naver.me/GwpjcpFr"},
+  {name:"이자카야 파파", category:"주류/안주", link:"https://naver.me/5l7vG0x6"},
+  {name:"자담치킨 남양주다산점", category:"주류/안주", link:"https://naver.me/GG72RjbH"},
+  {name:"족발구역 다산직영점", category:"주류/안주", link:"https://naver.me/xFL1lqRq"},
+  {name:"쭈꾸미도사 다산점", category:"주류/안주", link:"https://naver.me/5oE4SdSi"},
+  {name:"쿠모참치", category:"주류/안주", link:"https://naver.me/FRLnfNSh"},
+  {name:"그리너 다산법원점", category:"간편식", link:"https://naver.me/5ISzTY3e"},
+  {name:"맘스터치 도농점", category:"간편식", link:"https://naver.me/xmxXfXzb"},
+  {name:"빅빅버거 다산본점", category:"간편식", link:"https://naver.me/5r9zIIzz"},
+  {name:"이삭토스트 남양주다산도농점", category:"간편식", link:"https://naver.me/52R5bXrB"},
+  {name:"프랭크버거 다산도농점", category:"간편식", link:"https://naver.me/xLsKpmoN"},
+  {name:"한솥도시락 다산법조타운점", category:"간편식", link:"https://naver.me/G4WcGp63"},
+  {name:"83 커피 로스터스", category:"카페/디저트", link:"https://naver.me/F0zn1vku"},
+  {name:"메가커피 다산부영점", category:"카페/디저트", link:"https://naver.me/xmBqiz94"},
+  {name:"빽다방 정약용도서관점", category:"카페/디저트", link:"https://naver.me/5FElvJVc"},
+  {name:"사계의 오후 베이커리", category:"카페/디저트", link:"https://naver.me/5Rh0nonV"},
+  {name:"요거트아이스크림의정석 구리다산점", category:"카페/디저트", link:"https://naver.me/53lZhHG8"},
+  {name:"요거트월드 다산점", category:"카페/디저트", link:"https://naver.me/G4W5jiwU"},
+  {name:"우지커피 다산부영점", category:"카페/디저트", link:"https://naver.me/xUwdEgp3"},
+  {name:"이디야커피 다산부영점", category:"카페/디저트", link:"https://naver.me/xTTCuYaa"},
+  {name:"초코라떼 2호 다산점", category:"카페/디저트", link:"https://naver.me/G7VudnSJ"},
+  {name:"크루아", category:"카페/디저트", link:"https://naver.me/5eUcADvi"},
+  {name:"하이오커피 다산메인타워점", category:"카페/디저트", link:"https://naver.me/x4FSclXO"},
+  {name:"ESTORY", category:"쇼핑/생활", link:"https://naver.me/x67YgoM8"},
+  {name:"GS25 법원스타점", category:"쇼핑/생활", link:"https://naver.me/xmBnbvz0"},
+  {name:"그레이", category:"쇼핑/생활", link:"https://naver.me/5BwgovY1"},
+  {name:"금주부띠끄", category:"쇼핑/생활", link:"https://naver.me/GfCeUSh6"},
+  {name:"나다움헤어", category:"쇼핑/생활", link:"https://naver.me/5YFEzNV5"},
+  {name:"벤자민무어 남양주다산점", category:"쇼핑/생활", link:"https://naver.me/IDFGvaL2"},
+  {name:"세븐일레븐 다산센터점", category:"쇼핑/생활", link:"https://naver.me/GOhXNYYI"},
+  {name:"오브무드플라워", category:"쇼핑/생활", link:"https://naver.me/xoHPI7Um"},
+  {name:"오햅스헤어", category:"쇼핑/생활", link:"https://naver.me/5MVdChsS"},
+  {name:"유미끼 살롱", category:"쇼핑/생활", link:"https://naver.me/57VFepjW"},
+  {name:"하엘플라워", category:"쇼핑/생활", link:"https://naver.me/FnmDrQfa"}
+];
+
+
+let currentCategory="all",currentSearch="";
+function filterStores(){
+  return stores.filter(s=>{
+    const cat=currentCategory==="all"||s.category===currentCategory;
+    const search=!currentSearch||s.name.includes(currentSearch);
+    return cat&&search;
+  });
+}
+
+// 가로 채우기: 1행씩 (1열→2열→3열→4열 순서)
+function renderStores(){
+  const grid=document.getElementById("storeGrid");
+  const filtered=filterStores();
+  const cols=[[],[],[],[]];
+  
+  filtered.forEach((s,i)=>{
+    cols[i % 4].push(s);
+  });
+
+  grid.innerHTML=cols.map(col=>`
+    <div class="store-column">
+      ${col.map(store=>`
+        <div class="store-item">
+          <a class="store-name" href="${store.link}" target="_blank" rel="noopener" title="${store.name}">${store.name}</a>
+          <div class="store-link-row">
+            <a class="store-link" href="${store.link}" target="_blank" rel="noopener">네이버 지도 보기</a>
+            <svg class="arrow-icon" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"/>
+            </svg>
+          </div>
+        </div>
+      `).join("")}
+    </div>
+  `).join("");
+  initStoreObserver();
+}
+
+let storeObserver=null;
+function initStoreObserver(){
+  if(storeObserver){storeObserver.disconnect();}
+  const options={root:null,rootMargin:'0px',threshold:0.1};
+  const callback=(entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+      }else{
+        entry.target.classList.remove('visible');
+      }
+    });
+  };
+  storeObserver=new IntersectionObserver(callback,options);
+  const storeItems=document.querySelectorAll('.store-item');
+  storeItems.forEach(item=>{storeObserver.observe(item);});
+}
+let lastScrollY=window.pageYOffset; // 마지막 스크롤 위치 저장
+window.addEventListener('scroll',()=>{ // 스크롤 이벤트 감지
+  const header=document.querySelector('.header'); // 헤더 선택
+  if(window.pageYOffset>lastScrollY&&window.pageYOffset>70){header.classList.add('header-hide');} // 아래로 내릴 때 숨김
+  else{header.classList.remove('header-hide');} // 위로 올릴 때 표시
+  lastScrollY=window.pageYOffset; // 위치 갱신
+}); // 헤더 스크롤방향 감지 고정
+
+document.querySelectorAll(".tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+    tab.classList.add("active");
+    currentCategory=tab.dataset.category;
+    renderStores();
+  });
+});
+
+document.getElementById("searchBtn").addEventListener("click",()=>{currentSearch=document.getElementById("searchInput").value.trim();renderStores();});
+document.getElementById("searchInput").addEventListener("keydown",e=>{if(e.key==="Enter"){currentSearch=e.target.value.trim();renderStores();}});
+document.getElementById('scrollDownBtn').addEventListener('click',()=>{document.querySelector('.cta').scrollIntoView({behavior:'smooth',block:'start'});});
+
+renderStores();
+
+
+  // 맨 위로 올라가기 버튼
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  });
+
+  // 스크롤 위치에 따라 버튼 표시/숨김
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollToTopBtn.style.opacity = '1';
+      scrollToTopBtn.style.pointerEvents = 'auto';
+    } else {
+      scrollToTopBtn.style.opacity = '0';
+      scrollToTopBtn.style.pointerEvents = 'none';
+    }
+  });
+
+  // 초기 상태
+  if (window.scrollY <= 300) {
+    scrollToTopBtn.style.opacity = '0';
+    scrollToTopBtn.style.pointerEvents = 'none';
+  }
+</script>
+</body>
+</html>
