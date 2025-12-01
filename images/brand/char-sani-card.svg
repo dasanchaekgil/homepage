@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="_레이어_1" data-name="레이어_1" xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 277 278">
+  <!-- Generator: Adobe Illustrator 30.0.0, SVG Export Plug-In . SVG Version: 2.1.1 Build 123)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: #3a4149;
+      }
+
+      .st1 {
+        fill: #ff9bac;
+      }
+
+      .st2 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <rect class="st2" width="277" height="278"/>
+  <g>
+    <path class="st1" d="M100.8,238.9l-47.5-21,42-89.3,22.6,10.6-31.1,66.2,24.1,10.7-10.1,22.8Z"/>
+    <path class="st1" d="M150.5,237.7l-40.6-99,23.1-9.5,30.9,75.3,24.1-10.6,10.1,22.9-47.6,20.9Z"/>
+    <path class="st1" d="M158.8,118.2l60.6,35.3-13,21.3-53.6-32.8,5.9-23.8Z"/>
+    <path class="st1" d="M113.6,174.8c-29.5,0-53.4-23.9-53.4-53.4s23.9-53.4,53.4-53.4,53.4,23.9,53.4,53.4-23.9,53.4-53.4,53.4Z"/>
+    <path class="st0" d="M152.8,134.3c0,10.7-9.9,19.3-22,19.3s-22-8.6-22-19.3h44Z"/>
+    <path class="st0" d="M125.7,121.5h-7.9v-17.6h7.9v17.6Z"/>
+    <path class="st0" d="M143.9,121.5h-7.9v-17.6h7.9v17.6Z"/>
+    <path class="st1" d="M86.7,89.1l-49.2-50-17.4,17.9,51.4,49.9,15.2-17.8Z"/>
+  </g>
+</svg>
