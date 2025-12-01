@@ -721,7 +721,7 @@
     </nav>
   </header>
   <div class="hero-brand">
-      <video class="hero-brand-video" autoplay muted loop playsinline webkit-playsinline controls>
+      <video class="hero-brand-video" autoplay muted loop playsinline webkit-playsinline preload>
         <source src="videos/brand-hero-banner.mp4" type="video/mp4">
         <!-- 필요하면 webm 추가 -->
         <!-- <source src="videos/brand-bottom-banner.webm" type="video/webm"> -->
@@ -1078,6 +1078,17 @@
 
     riseItems.forEach(el=>riseObserver.observe(el));
   });
+
+  // 모바일 영상 자동재생 강제 실행
+document.addEventListener('DOMContentLoaded', function() {
+  const videos = document.querySelectorAll('video');
+  videos.forEach(video => {
+    video.muted = true;  // 음소거 확실히
+    video.play().catch(err => {
+      console.log('자동재생 실패:', err);
+    });
+  });
+});
 </script>
 </body>
 </html>
