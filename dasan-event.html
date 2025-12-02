@@ -599,16 +599,14 @@
   }
 function formatDateYMD(value) {
   if (!value) return '';
-  // Date 객체로 들어오는 경우 대비
-  if (value instanceof Date) {
-    const y = value.getFullYear();
-    const m = String(value.getMonth() + 1).padStart(2, '0');
-    const d = String(value.getDate()).padStart(2, '0');
-    return `${y}.${m}.${d}`;
-  }
-  // 문자열일 경우
+
+  // 값이 Date든 문자열이든, 먼저 문자열로 만든 다음
   const str = String(value);
-  const ymd = str.slice(0, 10); // YYYY-MM-DD만 추출
+
+  // ISO 형식이면 '2025-12-01T15:00:00.000Z' → '2025-12-01'
+  const ymd = str.slice(0, 10);
+
+  // 화면에는 2025.12.01 형태로 표시
   return ymd.replace(/-/g, '.');
 }
   document.addEventListener('DOMContentLoaded', loadEvents);
