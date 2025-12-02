@@ -583,8 +583,8 @@
         </header>
         <p class="event-meta">
           <span>
-            <time datetime="${ev.start}">${ev.start.replace(/-/g, '.')}</time> ~
-            <time datetime="${ev.end}">${ev.end.slice(5).replace('-', '.')}</time>
+            <time datetime="${ev.start}">${formatDateYMD(ev.start)}</time> ~
+            <time datetime="${ev.end}">${formatDateYMD(ev.end)}</time>
           </span>
           <span>${ev.place}</span>
         </p>
@@ -597,7 +597,20 @@
       container.appendChild(link);
     });
   }
-
+function formatDateYMD(value) {
+  if (!value) return '';
+  // Date 객체로 들어오는 경우 대비
+  if (value instanceof Date) {
+    const y = value.getFullYear();
+    const m = String(value.getMonth() + 1).padStart(2, '0');
+    const d = String(value.getDate()).padStart(2, '0');
+    return `${y}.${m}.${d}`;
+  }
+  // 문자열일 경우
+  const str = String(value);
+  const ymd = str.slice(0, 10); // YYYY-MM-DD만 추출
+  return ymd.replace(/-/g, '.');
+}
   document.addEventListener('DOMContentLoaded', loadEvents);
 
 </script>
