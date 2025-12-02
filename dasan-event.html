@@ -538,7 +538,7 @@
 //Json 파일 연동
   async function loadEvents() {
     try {
-      const res = await fetch('events.json'); // 같은 폴더에 있을 때
+      const res = await fetch('https://script.google.com/macros/s/AKfycbxGjp5IDfjf1TNLpTvry0I7VSbeHvDilH6n3iWAZuR0pW7EGXcPN8eyu1afEVuu67Db/exec');
       const data = await res.json();
 
       renderSection('ongoing', data.ongoing || []);
