@@ -607,17 +607,7 @@ function formatDateYMD(value) {
   const ymd = str.slice(0, 10);
   return ymd.replace(/-/g, '.');
 }
-
-  // 값이 Date든 문자열이든, 먼저 문자열로 만든 다음
-  const str = String(value);
-
-  // ISO 형식이면 '2025-12-01T15:00:00.000Z' → '2025-12-01'
-  const ymd = str.slice(0, 10);
-
-  // 화면에는 2025.12.01 형태로 표시
-  return ymd.replace(/-/g, '.');
-}
-  document.addEventListener('DOMContentLoaded', loadEvents);
+document.addEventListener('DOMContentLoaded', loadEvents);
 
 </script>
 </body>
