@@ -554,7 +554,11 @@
     if (!container) return;
 
     // 종료일 오름차순 정렬
-    events.sort((a, b) => new Date(a.end) - new Date(b.end));
+    events.sort((a, b) => {
+      const aStr = String(a.end).slice(0, 10);
+      const bStr = String(b.end).slice(0, 10);
+      return aStr.localeCompare(bStr);
+    });
 
     events.forEach(ev => {
       const link = document.createElement('a');
@@ -599,6 +603,10 @@
   }
 function formatDateYMD(value) {
   if (!value) return '';
+  const str = String(value);
+  const ymd = str.slice(0, 10);
+  return ymd.replace(/-/g, '.');
+}
 
   // 값이 Date든 문자열이든, 먼저 문자열로 만든 다음
   const str = String(value);
