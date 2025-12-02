@@ -1,0 +1,40 @@
+{
+  "ongoing": [
+    {
+      "title": "12월 크리스마스 포토존 이벤트",
+      "start": "2025-12-10",
+      "end": "2025-12-25",
+      "place": "다산책길 광장",
+      "status": "ongoing",
+      "tags": ["포토존", "크리스마스", "인증이벤트"],
+      "description": "포토존에서 사진을 찍고 인스타그램에 업로드하면 소정의 기념품을 드립니다.",
+      "link": "https://www.instagram.com/dasan_chaek_gil/"
+    }
+  ],
+
+  "upcoming": [
+    {
+      "title": "동네 상점 스탬프 투어",
+      "start": "2026-01-01",
+      "end": "2026-01-31",
+      "place": "다산책길 일대 가맹점",
+      "status": "upcoming",
+      "tags": ["스탬프투어", "동네상점", "쿠폰"],
+      "description": "참여 매장을 방문해 스탬프 5개를 모으면 카페 음료 쿠폰을 드립니다.",
+      "link": "https://www.instagram.com/dasan_chaek_gil/"
+    }
+  ],
+
+  "ended": [
+    {
+      "title": "가을 독서 챌린지",
+      "start": "2025-11-01",
+      "end": "2025-11-30",
+      "place": "다산책길 일대 서점",
+      "status": "ended",
+      "tags": ["독서챌린지", "굿즈"],
+      "description": "지정 도서를 읽고 인증하면 기념 굿즈를 증정하는 이벤트였습니다.",
+      "link": "https://www.instagram.com/dasan_chaek_gil/"
+    }
+  ]
+}
