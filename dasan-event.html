@@ -604,10 +604,11 @@
 function formatDateYMD(value) {
   if (!value) return '';
 
-  // 문자열 → Date로 만든 다음, 하루(+1일) 더해서 한국 기준으로 보정
+  // 문자열 → Date
   const d = new Date(value);
-  // 하루(24시간) 더하기
-  d.setDate(d.getDate() + 1);
+
+  // 하루(24시간) 빼기: UTC 기준 날짜가 +1일로 보이는 걸 되돌리기
+  d.setDate(d.getDate() - 1);
 
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
