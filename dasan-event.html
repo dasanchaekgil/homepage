@@ -557,7 +557,7 @@
 //Json 파일 연동
   async function loadEvents() {
     try {
-      const res = await fetch('https://script.google.com/macros/s/AKfycbwdFj6yY0GzMsMy9WoO1M8X3VKC-4ntI5858zkIIYQAgDQ4kOloG0JIPM75mnAQhVU3ug/exec');
+      const res = await fetch('https://script.google.com/macros/s/AKfycbw5noVAMvQOsPbAN9TmBbieEoLd8Wh8alQCYX0iks1jP9CsWeCaBBqgkJCEvK_puzLXNA/exec');
       const data = await res.json();
   
       renderSection('ongoing', data.ongoing || []);
@@ -596,9 +596,9 @@ function renderSection(status, events) {
 
   // 종료일 오름차순 정렬 (문자열 기준)
   events.sort((a, b) => {
-    const aDate = new Date(a.end);
-    const bDate = new Date(b.end);
-    return aDate - bDate;
+    const aStr = String(a.end).slice(0, 10);
+    const bStr = String(b.end).slice(0, 10);
+    return aStr.localeCompare(bStr);
   });
 
   events.forEach(ev => {
@@ -644,20 +644,8 @@ function renderSection(status, events) {
 
 function formatDateYMD(value) {
   if (!value) return '';
-
-  // 지금처럼 'Thu Dec 04' 같은 문자열이 오면 그대로 Date로 파싱
-  const d = new Date(value);
-
-  // 혹시 Invalid Date면 그냥 원본 표시
-  if (isNaN(d.getTime())) {
-    return String(value);
-  }
-
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-
-  return `${y}.${m}.${day}`;  // 예: 2025.12.04
+  const ymd = String(value).slice(0, 10); // 2025-12-04
+  return ymd.replace(/-/g, '.');          // 2025.12.04
 }
 
 document.addEventListener('DOMContentLoaded', loadEvents);
