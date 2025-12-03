@@ -596,9 +596,9 @@ function renderSection(status, events) {
 
   // 종료일 오름차순 정렬 (문자열 기준)
   events.sort((a, b) => {
-    const aStr = String(a.end).slice(0, 10);
-    const bStr = String(b.end).slice(0, 10);
-    return aStr.localeCompare(bStr);
+    const aDate = new Date(a.end);
+    const bDate = new Date(b.end);
+    return aDate - bDate;
   });
 
   events.forEach(ev => {
@@ -645,18 +645,21 @@ function renderSection(status, events) {
 function formatDateYMD(value) {
   if (!value) return '';
 
-  // 문자열 → Date
+  // 지금처럼 'Thu Dec 04' 같은 문자열이 오면 그대로 Date로 파싱
   const d = new Date(value);
 
-  // 하루(24시간) 빼기: UTC 기준 날짜가 +1일로 보이는 걸 되돌리기
-  d.setDate(d.getDate() - 1);
+  // 혹시 Invalid Date면 그냥 원본 표시
+  if (isNaN(d.getTime())) {
+    return String(value);
+  }
 
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');
   const day = String(d.getDate()).padStart(2, '0');
 
-  return `${y}.${m}.${day}`;
+  return `${y}.${m}.${day}`;  // 예: 2025.12.04
 }
+
 document.addEventListener('DOMContentLoaded', loadEvents);
 
 </script>
