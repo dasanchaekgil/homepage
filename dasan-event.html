@@ -557,7 +557,7 @@
 //Json 파일 연동
   async function loadEvents() {
     try {
-      const res = await fetch('https://script.google.com/macros/s/AKfycbw5noVAMvQOsPbAN9TmBbieEoLd8Wh8alQCYX0iks1jP9CsWeCaBBqgkJCEvK_puzLXNA/exec');
+      const res = await fetch('https://script.google.com/macros/s/AKfycby0y2lb-KjFP_hObcZlt-dafCMu-0Kjlb0ziD532Z1-bQfX-M6J4TkqoaYEoi_QWOYJfg/exec');
       const data = await res.json();
   
       renderSection('ongoing', data.ongoing || []);
