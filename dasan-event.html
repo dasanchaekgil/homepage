@@ -66,6 +66,19 @@
     gap:20px;
   }
 
+  .event-loading,
+  .event-error,
+  .event-empty{
+    grid-column:1 / -1;
+    padding:24px 0;
+    text-align:center;
+    font-size:14px;
+    color:var(--muted);
+  }
+  .event-error{
+    color:#c00;
+  }
+
   /* 카드 전체 클릭 가능 처리 */
   .event-card-link{
     display:block;
@@ -430,18 +443,21 @@
     <section class="event-section" aria-label="진행 중 이벤트">
       <h2 class="event-section-title">진행 중 이벤트</h2>
       <div class="event-list" id="event-list-ongoing"></div>
+      <p class="event-loading">불러오는 중...</p>
     </section>
 
     <!-- 예정 -->
     <section class="event-section" aria-label="예정된 이벤트">
       <h2 class="event-section-title">예정 이벤트</h2>
       <div class="event-list" id="event-list-upcoming"></div>
+      <p class="event-loading">불러오는 중...</p>
     </section>
 
     <!-- 종료 -->
     <section class="event-section" aria-label="종료된 이벤트">
       <h2 class="event-section-title">종료된 이벤트</h2>
       <div class="event-list" id="event-list-ended"></div>
+      <p class="event-loading">불러오는 중...</p>
     </section>
   </main>
 
@@ -540,67 +556,89 @@
     try {
       const res = await fetch('https://script.google.com/macros/s/AKfycbxGjp5IDfjf1TNLpTvry0I7VSbeHvDilH6n3iWAZuR0pW7EGXcPN8eyu1afEVuu67Db/exec');
       const data = await res.json();
-
+  
       renderSection('ongoing', data.ongoing || []);
       renderSection('upcoming', data.upcoming || []);
-      renderSection('ended', data.ended || []);
+      renderSection('ended',   data.ended   || []);
+  
+      sortEventsByEndDate(); // 데이터 들어온 뒤 정렬
     } catch (e) {
       console.error('이벤트 데이터를 불러오지 못했습니다.', e);
+      ['ongoing','upcoming','ended'].forEach(status => {
+        const container = document.getElementById(`event-list-${status}`);
+        if (!container) return;
+        container.innerHTML = '<p class="event-error">이벤트를 불러오는 데 실패했습니다. 잠시 후 다시 시도해 주세요.</p>';
+      });
     }
   }
 
-  function renderSection(status, events) {
-    const container = document.getElementById(`event-list-${status}`);
-    if (!container) return;
+function renderSection(status, events) {
+  const container = document.getElementById(`event-list-${status}`);
+  if (!container) return;
 
-    // 종료일 오름차순 정렬
-    events.sort((a, b) => {
-      const aStr = String(a.end).slice(0, 10);
-      const bStr = String(b.end).slice(0, 10);
-      return aStr.localeCompare(bStr);
-    });
+  // 기존 로딩/에러/빈 문구 제거
+  const msg = container.querySelector('.event-loading, .event-error, .event-empty');
+  if (msg) msg.remove();
 
-    events.forEach(ev => {
-      const link = document.createElement('a');
-      link.className = 'event-card-link';
-      link.href = ev.link || 'https://www.instagram.com/dasan_chaek_gil/';
-      link.target = '_blank';
-      link.rel = 'noopener';
-
-      const article = document.createElement('article');
-      article.className = 'event-card';
-      article.dataset.status = status;
-      article.dataset.end = ev.end;
-
-      // 상태 한글/배지 클래스
-      const statusLabel =
-        status === 'ongoing' ? '진행중' :
-        status === 'upcoming' ? '예정' : '종료';
-      const badgeClass =
-        status === 'ongoing' ? 'event-badge--ongoing' :
-        status === 'upcoming' ? 'event-badge--upcoming' : 'event-badge--ended';
-
-      article.innerHTML = `
-        <header class="event-card-header">
-          <p class="event-badge ${badgeClass}">${statusLabel}</p>
-          <h3 class="event-title">${ev.title}</h3>
-        </header>
-        <p class="event-meta">
-          <span>
-            <time datetime="${ev.start}">${formatDateYMD(ev.start)}</time> ~
-            <time datetime="${ev.end}">${formatDateYMD(ev.end)}</time>
-          </span>
-          <span>${ev.place}</span>
-        </p>
-        <p class="event-desc">${ev.description}</p>
-        <p class="event-tags">${(ev.tags || []).map(t => '#' + t).join(' ')}</p>
-        <p class="event-link-text">상세보기</p>
-      `;
-
-      link.appendChild(article);
-      container.appendChild(link);
-    });
+  if (!events.length) {
+    const empty = document.createElement('p');
+    empty.className = 'event-empty';
+    empty.textContent =
+      status === 'ongoing' ? '진행 중인 이벤트가 없습니다.' :
+      status === 'upcoming' ? '예정된 이벤트가 없습니다.' :
+      '종료된 이벤트가 없습니다.';
+    container.appendChild(empty);
+    return;
   }
+
+  // 종료일 오름차순 정렬 (문자열 기준)
+  events.sort((a, b) => {
+    const aStr = String(a.end).slice(0, 10);
+    const bStr = String(b.end).slice(0, 10);
+    return aStr.localeCompare(bStr);
+  });
+
+  events.forEach(ev => {
+    const link = document.createElement('a');
+    link.className = 'event-card-link';
+    link.href = ev.link || 'https://www.instagram.com/dasan_chaek_gil/';
+    link.target = '_blank';
+    link.rel = 'noopener';
+
+    const article = document.createElement('article');
+    article.className = 'event-card';
+    article.dataset.status = status;
+    article.dataset.end = ev.end;
+
+    const statusLabel =
+      status === 'ongoing' ? '진행중' :
+      status === 'upcoming' ? '예정' : '종료';
+    const badgeClass =
+      status === 'ongoing' ? 'event-badge--ongoing' :
+      status === 'upcoming' ? 'event-badge--upcoming' : 'event-badge--ended';
+
+    article.innerHTML = `
+      <header class="event-card-header">
+        <p class="event-badge ${badgeClass}">${statusLabel}</p>
+        <h3 class="event-title">${ev.title}</h3>
+      </header>
+      <p class="event-meta">
+        <span>
+          <time datetime="${ev.start}">${formatDateYMD(ev.start)}</time> ~
+          <time datetime="${ev.end}">${formatDateYMD(ev.end)}</time>
+        </span>
+        <span>${ev.place}</span>
+      </p>
+      <p class="event-desc">${ev.description}</p>
+      <p class="event-tags">${(ev.tags || []).map(t => '#' + t).join(' ')}</p>
+      <p class="event-link-text">상세보기</p>
+    `;
+
+    link.appendChild(article);
+    container.appendChild(link);
+  });
+}
+
 function formatDateYMD(value) {
   if (!value) return '';
 
