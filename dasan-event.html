@@ -302,9 +302,23 @@
 
   .event-card-header{
     display:flex;
-    align-items:center;
+    align-items:flex-start;   /* 전체를 위 기준으로 */
     gap:8px;
   }
+
+  .event-badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:4px 10px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:600;
+    width:auto;
+    white-space:nowrap;
+    align-self:flex-start;    /* 세로로 안 늘어나고, 자기 높이만 */
+  }
+
   .event-title{
     font-size:20px;
     font-weight:600;
@@ -614,7 +628,7 @@ function renderSection(status, events) {
     article.dataset.end = ev.end;
 
     const statusLabel =
-      status === 'ongoing' ? '진행중' :
+      status === 'ongoing' ? '진행' :
       status === 'upcoming' ? '예정' : '종료';
     const badgeClass =
       status === 'ongoing' ? 'event-badge--ongoing' :
